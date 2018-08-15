@@ -205,11 +205,15 @@ SELECT DATE_ADD(fecha_pago, INTERVAL 6 month) from seguro where id_vehiculo = 00
 SELECT DATE_ADD(fecha_pago, INTERVAL 1 month) from seguro where id_vehiculo = 0018;
 SELECT DATE_ADD(fecha_pago, INTERVAL 3 month) from seguro where id_vehiculo = 0018;
 SELECT DATE_ADD(fecha_pago, INTERVAL 1 year) from seguro where id_vehiculo = 0018;
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `actualizacion_kilometraje`
---
+DELIMITER $$
+CREATE procedure select_seguro_importe(
+	IN IdVehiculo INT(4))
+BEGIN		      
+SELECT SUM(monto_total) AS gasto FROM seguro WHERE id_vehiculo = IdVehiculo;
+END $$
+DELIMITER ;
+
 
 CREATE TABLE `actualizacion_kilometraje` (
   `id_actualizacion` int(10) UNSIGNED ZEROFILL NOT NULL,
