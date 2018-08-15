@@ -155,3 +155,11 @@ BEGIN
 	END IF;
 END $$
 DELIMITER ;
+
+DELIMITER $$
+CREATE procedure select_seguro_importe(
+	IN IdVehiculo INT(4))
+BEGIN		      
+SELECT SUM(monto_total) AS gasto FROM seguro WHERE id_vehiculo = IdVehiculo;
+END $$
+DELIMITER ;
