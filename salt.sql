@@ -188,7 +188,8 @@ SELECT DATE_ADD(fecha_pago, INTERVAL 1 MONTH) AS proximo_pago FROM seguro WHERE 
 END IF;
 
 IF strcmp(cadena, 'Anual') = 0 THEN
-SELECT DATE_ADD(fecha_pago, INTERVAL 1 YEAR) AS proximo_pago FROM seguro WHERE id_vehiculo = idVehiculo;
+
+SELECT DATE_ADD(fecha_pago, INTERVAL 1 YEAR) AS proximo_pago FROM seguro WHERE id_vehiculo = 0017;
 END IF;
 
 IF strcmp(cadena, 'Trimestral') = 0 THEN
@@ -214,6 +215,7 @@ SELECT SUM(monto_total) AS gasto FROM seguro WHERE id_vehiculo = IdVehiculo;
 END $$
 DELIMITER ;
 
+SELECT fecha_pago FROM seguro ORDER BY id_seguro desc LIMIT 1;
 
 CREATE TABLE `actualizacion_kilometraje` (
   `id_actualizacion` int(10) UNSIGNED ZEROFILL NOT NULL,
