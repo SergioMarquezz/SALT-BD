@@ -232,7 +232,25 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE update_vehiculo(
+	IN idVehiculo INT(4),
+    IN placas VARCHAR(8),
+    IN rendi FLOAT,
+    IN estado VARCHAR(25),
+    IN numero VARCHAR(25),
+    IN vigencia DATE,
+    IN manteni VARCHAR(20),
+    IN statusVe VARCHAR(15))
+BEGIN
+	UPDATE vehiculos SET placa = placas, rendimiento = rendi, estado_tarjeta = estado, numero_tarjeta = numero, vigencia_tarjeta = vigencia,
+    periodo_mantenimiento = manteni, estado_vehiculo = statusVe
+    WHERE id_vehiculo = idVehiculo;
+END $$
+DELIMITER ;
+    
 
+describe vehiculos;
 #SELECT fecha_pago FROM seguro ORDER BY id_seguro desc LIMIT 1;
 
 
