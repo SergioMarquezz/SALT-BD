@@ -248,6 +248,15 @@ BEGIN
     WHERE id_vehiculo = idVehiculo;
 END $$
 DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE update_status_vehiculo(
+	IN idVehiculo INT(4),
+    IN statusVe VARCHAR(15))
+BEGIN
+	UPDATE vehiculos SET estado_vehiculo = statusVe WHERE id_vehiculo = IdVehiculo;
+END $$
+DELIMITER ;
     
 
 describe vehiculos;
