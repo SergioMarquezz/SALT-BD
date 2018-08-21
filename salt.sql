@@ -260,7 +260,7 @@ BEGIN
 END $$
 DELIMITER ;
     
-#Agregar al servidor y GitHub    
+
 DELIMITER $$
 CREATE PROCEDURE ultimo_seguro(
 	IN idVehiculo INT(4))
