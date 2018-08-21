@@ -70,9 +70,11 @@ CREATE PROCEDURE `select_dias_verificacion` (IN `FECHA` DATE)  BEGIN
 SELECT DATEDIFF(CURDATE(), FECHA)*-1 as dias;
 END$$
 
-CREATE DEFINER=`id6320204_miguel`@`%` PROCEDURE `select_drivers` ()  BEGIN
-SELECT * FROM usuarios WHERE rol = "Conductor";
+
+CREATE PROCEDURE `select_drivers` ()  BEGIN
+SELECT nombre,rol FROM usuarios WHERE rol = "Conductor";
 END$$
+
 
 CREATE PROCEDURE `select_fecha` (IN `cadena` VARCHAR(25), IN `IdVehiculo` INT(4))  BEGIN
 
@@ -155,7 +157,7 @@ CREATE PROCEDURE `select_segunda_revision` (IN `id_travel` INT(8))  BEGIN
 END$$
 
 CREATE PROCEDURE `select_seguro` (IN `idVehiculo` INT(4))  BEGIN
-	SELECT no_poliza, aseguradora,fecha_pago,fecha_registro,foto_poliza,monto_total,periodo_pago,modelo
+	SELECT id_seguro, no_poliza, aseguradora,fecha_pago,fecha_registro,foto_poliza,monto_total,periodo_pago,modelo
     FROM seguro
     INNER JOIN vehiculos on vehiculos.id_vehiculo = seguro.id_vehiculo where vehiculos.id_vehiculo = idVehiculo;
 END$$
@@ -208,8 +210,8 @@ CREATE PROCEDURE `update_kilometraje` (IN `id` INT(4), IN `kilo` INT(8))  BEGIN
 	UPDATE vehiculos SET kilometraje = kilo WHERE id_vehiculo = id;
 END$$
 
-CREATE PROCEDURE `update_seguro` (IN `fecha` DATE, IN `idVehiculo` INT(4), IN `total` INT(10), IN `foto` VARCHAR(255))  BEGIN
-	update seguro set fecha_pago = fecha, monto_total = total, foto_recibo = foto where id_vehiculo = idVehiculo;
+CREATE PROCEDURE `update_seguro` (IN `fecha` DATE, IN `idSeguro` INT(4), IN `total` INT(10), IN `foto` VARCHAR(255))  BEGIN
+	update seguro set fecha_pago = fecha, monto_total = total, foto_recibo = foto where id_seguro = idSeguro;
 END$$
 
 CREATE PROCEDURE `update_travel` (IN `id_vi` INT(8), IN `f_salida` DATE, IN `dest` VARCHAR(20), IN `mot` VARCHAR(35), IN `edo` VARCHAR(15), IN `obs` VARCHAR(100), IN `id_ve` INT(8), IN `id_us` INT(4))  BEGIN    
@@ -249,19 +251,23 @@ BEGIN
 END $$
 DELIMITER ;
 
+
 DELIMITER $$
 CREATE PROCEDURE update_status_vehiculo(
-	IN idVehiculo INT(4),
-    IN statusVe VARCHAR(15))
+	IN idVehiculo INT(4))
 BEGIN
-	UPDATE vehiculos SET estado_vehiculo = statusVe WHERE id_vehiculo = IdVehiculo;
+	UPDATE vehiculos SET estado_vehiculo = 'Vendido' WHERE id_vehiculo = IdVehiculo;
 END $$
 DELIMITER ;
     
-
-describe vehiculos;
-#SELECT fecha_pago FROM seguro ORDER BY id_seguro desc LIMIT 1;
-
+#Agregar al servidor y GitHub    
+DELIMITER $$
+CREATE PROCEDURE ultimo_seguro(
+	IN idVehiculo INT(4))
+BEGIN
+	SELECT id_seguro,fecha_pago,monto_total FROM seguro where id_vehiculo = idVehiculo ORDER BY id_seguro desc LIMIT 1;
+END $$
+DELIMITER ;
 
 # Script de las tablas
 
