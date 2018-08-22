@@ -2,7 +2,7 @@
 DELIMITER $$
 CREATE PROCEDURE select_cars ()  
 BEGIN
-	SELECT * FROM vehiculos;
+	SELECT * FROM vehiculos WHERE estado_vehiculo = 'Activo';
 END$$
 DELIMITER ;
 

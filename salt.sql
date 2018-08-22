@@ -59,7 +59,7 @@ CREATE PROCEDURE `insert_verificacion` (IN `f_veri` DATE, IN `prov` VARCHAR(25),
 END$$
 
 CREATE PROCEDURE `select_cars` ()  BEGIN
-SELECT * FROM vehiculos;
+SELECT * FROM vehiculos WHERE estado_vehiculo = 'Activo';
 END$$
 
 CREATE PROCEDURE `select_dias_verificacion` (IN `FECHA` DATE)  BEGIN		      
