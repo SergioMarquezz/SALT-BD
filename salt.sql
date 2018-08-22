@@ -70,9 +70,8 @@ CREATE PROCEDURE `select_dias_verificacion` (IN `FECHA` DATE)  BEGIN
 SELECT DATEDIFF(CURDATE(), FECHA)*-1 as dias;
 END$$
 
-
 CREATE PROCEDURE `select_drivers` ()  BEGIN
-SELECT nombre,rol FROM usuarios WHERE rol = "Conductor";
+SELECT id_usuario,nombre,rol FROM usuarios WHERE rol = "Conductor";
 END$$
 
 
@@ -178,8 +177,10 @@ CREATE PROCEDURE `select_travel_detail` (IN `id_travel` INT(8))  BEGIN
 	SELECT * FROM vista_detalle_viaje WHERE id_viaje = id_travel;
 END$$
 
-CREATE PROCEDURE `select_users` ()  BEGIN
-SELECT * FROM usuarios;
+CREATE PROCEDURE `select_users` (
+	IN idUsuario INT(4))  
+BEGIN
+SELECT id_usuario,nombre,rol,correo,foto_perfil FROM usuarios WHERE estado_usuario = 'Activo' AND  id_usuario != idUsuario;
 END$$
 
 CREATE PROCEDURE `select_vehiculo` (IN `id_carro` INT(4))  BEGIN
@@ -714,18 +715,18 @@ CREATE TABLE `vista_viajes` (
 --
 -- Estructura para la vista `vista_detalle_viaje`
 --
-DROP TABLE IF EXISTS `vista_detalle_viaje`;
+DROP VIEW IF EXISTS `vista_detalle_viaje`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id6320204_miguel`@`%` SQL SECURITY DEFINER VIEW `vista_detalle_viaje`  AS  select `viajes`.`id_viaje` AS `id_viaje`,`viajes`.`fecha_salida` AS `fecha_salida`,`viajes`.`destino` AS `destino`,`viajes`.`motivo` AS `motivo`,`viajes`.`observaciones` AS `observaciones`,`viajes`.`estado_viaje` AS `estado_viaje`,`vehiculos`.`marca` AS `marca`,`vehiculos`.`modelo` AS `modelo`,`vehiculos`.`placa` AS `placa`,`vehiculos`.`rendimiento` AS `rendimiento`,`vehiculos`.`vigencia_tarjeta` AS `vigencia_tarjeta`,`vehiculos`.`kilometraje` AS `kilometraje`,`usuarios`.`nombre` AS `nombre` from ((`viajes` join `vehiculos` on(`vehiculos`.`id_vehiculo` = `viajes`.`id_vehiculo`)) join `usuarios` on(`usuarios`.`id_usuario` = `viajes`.`id_usuario`)) ;
+CREATE VIEW `vista_detalle_viaje`  AS  select `viajes`.`id_viaje` AS `id_viaje`,`viajes`.`fecha_salida` AS `fecha_salida`,`viajes`.`destino` AS `destino`,`viajes`.`motivo` AS `motivo`,`viajes`.`observaciones` AS `observaciones`,`viajes`.`estado_viaje` AS `estado_viaje`,`vehiculos`.`marca` AS `marca`,`vehiculos`.`modelo` AS `modelo`,`vehiculos`.`placa` AS `placa`,`vehiculos`.`rendimiento` AS `rendimiento`,`vehiculos`.`vigencia_tarjeta` AS `vigencia_tarjeta`,`vehiculos`.`kilometraje` AS `kilometraje`,`usuarios`.`nombre` AS `nombre` from ((`viajes` join `vehiculos` on(`vehiculos`.`id_vehiculo` = `viajes`.`id_vehiculo`)) join `usuarios` on(`usuarios`.`id_usuario` = `viajes`.`id_usuario`)) ;
 
 -- --------------------------------------------------------
 
 --
 -- Estructura para la vista `vista_viajes`
 --
-DROP TABLE IF EXISTS `vista_viajes`;
+DROP VIEW IF EXISTS `vista_viajes`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`id6320204_miguel`@`%` SQL SECURITY DEFINER VIEW `vista_viajes`  AS  select `viajes`.`id_viaje` AS `ID`,`viajes`.`fecha_salida` AS `FECHA_SALIDA`,`viajes`.`destino` AS `DESTINO`,`viajes`.`estado_viaje` AS `ESTADO_VIAJE`,`viajes`.`motivo` AS `MOTIVO`,`viajes`.`observaciones` AS `OBSERVACIONES`,`vehiculos`.`id_vehiculo` AS `ID_VEHICULO`,`vehiculos`.`modelo` AS `MODELO_VEHICULO`,`usuarios`.`id_usuario` AS `ID_USUARIO`,`usuarios`.`nombre` AS `CONDUCTOR` from ((`viajes` join `vehiculos` on(`vehiculos`.`id_vehiculo` = `viajes`.`id_vehiculo`)) join `usuarios` on(`usuarios`.`id_usuario` = `viajes`.`id_usuario`)) ;
+CREATE VIEW `vista_viajes`  AS  select `viajes`.`id_viaje` AS `ID`,`viajes`.`fecha_salida` AS `FECHA_SALIDA`,`viajes`.`destino` AS `DESTINO`,`viajes`.`estado_viaje` AS `ESTADO_VIAJE`,`viajes`.`motivo` AS `MOTIVO`,`viajes`.`observaciones` AS `OBSERVACIONES`,`vehiculos`.`id_vehiculo` AS `ID_VEHICULO`,`vehiculos`.`modelo` AS `MODELO_VEHICULO`,`usuarios`.`id_usuario` AS `ID_USUARIO`,`usuarios`.`nombre` AS `CONDUCTOR` from ((`viajes` join `vehiculos` on(`vehiculos`.`id_vehiculo` = `viajes`.`id_vehiculo`)) join `usuarios` on(`usuarios`.`id_usuario` = `viajes`.`id_usuario`)) ;
 
 --
 -- Índices para tablas volcadas
