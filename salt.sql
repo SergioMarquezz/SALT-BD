@@ -14,10 +14,6 @@ CREATE PROCEDURE `cambiar_contrasenia` (IN `id` INT(4), IN `pass` VARCHAR(20))  
 	UPDATE usuarios SET contrasenia = pass WHERE id_usuario = id;
 END$$
 
-CREATE PROCEDURE `delete_user` (`id` INT)  BEGIN
-DELETE FROM usuarios where id_usuario = id;
-END$$
-
 CREATE PROCEDURE `insert_presupuesto` (IN `dist` INT(5), IN `precio_c` FLOAT, IN `total_c` FLOAT, IN `litros_C` FLOAT, IN `vale_c` TINYINT(4), IN `n_vale` VARCHAR(10), IN `t_casetas` INT(2), IN `g_casetas` FLOAT, IN `n_personas` INT(2), IN `t_hotel` FLOAT, IN `t_comida` FLOAT, IN `t_biaticos` FLOAT, IN `t_presupuesto` FLOAT, IN `id_via` INT(8))  BEGIN
     INSERT INTO presupuestos(distancia,precio_combustible,total_combustible,litros_combustible,vale_gasolina,no_vale,
                             total_casetas,gasto_casetas,no_personas,hotel,comida,total_biaticos, total_presupuesto,id_viaje)
@@ -189,7 +185,7 @@ END$$
 
 CREATE PROCEDURE `select_verificaciones` (IN `id_carro` INT(4))  BEGIN 
     SELECT verificaciones.foto_factura, verificaciones.fecha_verificacion, verificaciones.proveedor, verificaciones.importe, verificaciones.descripcion, usuarios.nombre FROM verificaciones INNER JOIN usuarios ON usuarios.id_usuario = verificaciones.id_usuario WHERE id_vehiculo = id_carro; 
-    END$$
+END$$
 
 CREATE PROCEDURE `select_viajes` ()  BEGIN
 SELECT * FROM vista_viajes WHERE estado_viaje = 'Iniciado' 
@@ -267,6 +263,15 @@ CREATE PROCEDURE ultimo_seguro(
 	IN idVehiculo INT(4))
 BEGIN
 	SELECT id_seguro,fecha_pago,monto_total FROM seguro where id_vehiculo = idVehiculo ORDER BY id_seguro desc LIMIT 1;
+END $$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE update_estado_usuario(
+	IN idUsuario INT(4))
+BEGIN
+	UPDATE usuarios SET estado_usuario = 'Inactivo' WHERE id_usuario = idUsuario;
 END $$
 DELIMITER ;
 
